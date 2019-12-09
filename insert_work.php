@@ -41,8 +41,7 @@ if(mysqli_num_rows($resultmain)>0) {
         $status = $data->status;
         if($status=="OK"){
             $address=$data->results[0]->formatted_address;
-        }
-        else {
+        }else {
             $address=false;
         }
     }
@@ -53,24 +52,17 @@ if(mysqli_num_rows($resultmain)>0) {
        if($status=='Report'){
            $result = mysqli_query($conn, "update emobworkreport set OutLattitude='$latitude',OutLongitude='$longitude',OutTime='$currentTime',OutAddress='$address' where ScheduleID='$myscheduleID' and EmployeeID='$employeeID'");
            $response["success"] =3;
-       }
-       else{
+       }else{
            $response["success"] =2;
        }
 
-    }
-    else{
+    }else{
         $result = mysqli_query($conn, "insert into emobworkreport (ScheduleID, EmployeeID, Date, Lattitude, Longitude, Status, Time, Address)
                                    values ('$myscheduleID', '$employeeID', '$date','$latitude', '$longitude', '$status','$currentTime','$address')");
         $response["success"] =1;
     }
 
-}
-//if ($result>0) {
-//
-//}
-else
-{
+}else{
     $response["success"] =0;
 }
 mysqli_close($conn);

@@ -20,6 +20,7 @@ if(mysqli_num_rows($resultmain)>0) {
         $BForm='';
         $Collection='';
         $Verification='';
+        $ReVerification='';
         $OfficeWork='';
         $Marketing='';
         $Payment='';
@@ -33,81 +34,66 @@ if(mysqli_num_rows($resultmain)>0) {
         $id = null;
         $id = $_POST['MyScheduleID'];
 
-        if(isset($_POST['status']))
-        {
+        if(isset($_POST['status'])){
             $visitStatus=$_POST['status'];
 
             if($visitStatus=="Visited"){
                 $VisitStatus=2;
-            }
-            else if($visitStatus=="NotVisited"){
+            }else if($visitStatus=="NotVisited"){
                 $VisitStatus=3;
             }
 
-            if(isset($_POST['checkAffiliation']))
-            {
+            if(isset($_POST['checkAffiliation'])){
                 $Affiliation = $_POST["checkAffiliation"];
             }
-            if(isset($_POST['checkTraining']))
-            {
+            if(isset($_POST['checkTraining'])){
                 $Training = $_POST["checkTraining"];
             }
-            if(isset($_POST['checkRetraining']))
-            {
+            if(isset($_POST['checkRetraining'])){
                 $Retraining = $_POST["checkRetraining"];
             }
-            if(isset($_POST['checkSegregation']))
-            {
+            if(isset($_POST['checkSegregation'])){
                 $Segregation = $_POST["checkSegregation"];
             }
-            if(isset($_POST['checkBForm']))
-            {
+            if(isset($_POST['checkBForm'])){
                 $BForm = $_POST["checkBForm"];
             }
-            if(isset($_POST['checkMedicineCollection']))
-            {
+            if(isset($_POST['checkMedicineCollection'])){
                 $Collection = $_POST["checkMedicineCollection"];
             }
+            if(isset($_POST['checkReVerification'])) {
+                $ReVerification = $_POST["checkReVerification"];
+            }
             if(isset($_POST['checkVerification'])) {
-
                 $Verification = $_POST["checkVerification"];
             }
             if(isset($_POST['checkOfficeWork'])) {
-
                 $OfficeWork = $_POST["checkOfficeWork"];
             }
             if(isset($_POST['checkMarketing'])) {
-
                 $Marketing = $_POST["checkMarketing"];
             }
             if(isset($_POST['checkPaymentFollowup'])) {
-
                 $Payment = $_POST["checkPaymentFollowup"];
             }
             if(isset($_POST['checkSupply'])) {
-
                 $Supply = $_POST["checkSupply"];
             }
             if(isset($_POST['checkSupervisor'])) {
-
                 $supervisorDuty = $_POST["checkSupervisor"];
             }
             if(isset($_POST['checkMeeting'])) {
-
                 $Meeting = $_POST["checkMeeting"];
             }
             if(isset($_POST['checkTrainingAssistant'])) {
-
                 $trainingAssistant = $_POST["checkTrainingAssistant"];
             }
             if(isset($_POST['checkInchargeDuty'])) {
-
                 $inchargeDuty = $_POST["checkInchargeDuty"];
             }
 
         }
-        if(isset($_POST['FollowDate']))
-        {
+        if(isset($_POST['FollowDate'])){
             $FollowupDate = date('Y-m-d',strtotime($_POST['FollowDate']));
         }
 
@@ -168,11 +154,10 @@ if(mysqli_num_rows($resultmain)>0) {
                 }
                 $SegregationFRemark=$_POST["txtQ6"];
 
-
                 $CustomerRemarks=$_POST["customerRemarks"];
 
                 if($Affiliation!=0 || $Training!=0 || $Retraining!=0 || $Segregation!=0 || $BForm!=0 || $OfficeWork!=0 || $Marketing!=0 ||
-                    $Payment!=0 || $Collection!=0 || $Verification!=0 || $Supply!=0 || $supervisorDuty!=0 || $Meeting!=0|| $trainingAssistant!=0|| $inchargeDuty!=0)
+                    $Payment!=0 || $Collection!=0 || $Verification!=0 || $ReVerification!=0 || $Supply!=0 || $supervisorDuty!=0 || $Meeting!=0|| $trainingAssistant!=0|| $inchargeDuty!=0)
                 {
                     $resultMain=mysqli_query($conn,"update scheduledetail set Status='$VisitStatus' where ID='$id';");
 
@@ -181,14 +166,11 @@ if(mysqli_num_rows($resultmain)>0) {
                         $result=mysqli_query($conn,"select * from schedulepurpose where DetailID='$id' and Purpose=1;");
                         if(mysqli_num_rows($result)==0) {
                             $result1 = mysqli_query($conn,"insert into schedulepurpose (DetailID,Purpose) values('$id','$Affiliation')");
-                            if($result1)
-                            {
+                            if($result1){
                                 $result2 = mysqli_query($conn,"insert into followup (PurposeID,FollowupDate) values('$id','$FollowupDate')");
                                 $result3=mysqli_query($conn,"update scheduledetail set CustomerRemarks='$CustomerRemarks' where ID='$id';");
                             }
-                        }
-                        else
-                        {
+                        }else{
                             $result1=mysqli_query($conn,"update followup set FollowupDate='$FollowupDate' where PurposeID='$id';");
                             $result2=mysqli_query($conn,"update scheduledetail set CustomerRemarks='$CustomerRemarks' where ID='$id';");
                         }
@@ -209,14 +191,11 @@ if(mysqli_num_rows($resultmain)>0) {
                                         $result2 = mysqli_query($conn, "insert into training (PurposeID,SchedulePurposeID,TrainingDate,StartTime,FinishTime,Sessions,NoOfAttendee,Assistance,Remark)
                                      values('$id','$schedulePurposeID','$TrainingDate','$StartTime','$FinishTime','$Sessions','$Attendee','$Assistance','$TrainingRemark')");
                                     }
-
                                     $result3 = mysqli_query($conn, "insert into followup (PurposeID,FollowupDate)
                                           values('$id','$FollowupDate')");
                                 }
                             }
-                        }
-                        else
-                        {
+                        }else{
                             while ($row = mysqli_fetch_array($result)) {
                                 $schedulePurposeID = $row['ID'];
 
@@ -259,15 +238,11 @@ if(mysqli_num_rows($resultmain)>0) {
                                         $result2 = mysqli_query($conn, "insert into training (PurposeID,SchedulePurposeID,TrainingDate,StartTime,FinishTime,Sessions,NoOfAttendee,Assistance,Remark)
                                      values('$id','$schedulePurposeID','$TrainingDate','$StartTime','$FinishTime','$Sessions','$Attendee','$Assistance','$TrainingRemark')");
                                     }
-
                                     $result3 = mysqli_query($conn, "insert into followup (PurposeID,FollowupDate)
                                           values('$id','$FollowupDate')");
                                 }
                             }
-                        }
-
-                        else
-                        {
+                        }else{
                             while ($row = mysqli_fetch_array($result)) {
                                 $schedulePurposeID = $row['ID'];
                                 $result1 = mysqli_query($conn, "select * from training where PurposeID='$id'");
@@ -281,10 +256,8 @@ if(mysqli_num_rows($resultmain)>0) {
                                     $result2 = mysqli_query($conn, "update training set TrainingDate='$TrainingDate',StartTime='$StartTime',FinishTime='$FinishTime',Sessions='$Sessions',
                                      NoOfAttendee='$Attendee',Assistance='$Assistance',Remark='$TrainingRemark' where PurposeID='$id';");
                                 }
-
                                 $result3 = mysqli_query($conn, "select * from followup where PurposeID='$id'");
                                 if (mysql_num_rows($result3) == 0) {
-
                                     $result4 = mysqli_query($conn, "insert into followup (PurposeID,FollowupDate)
                              values('$id','$FollowupDate')");
                                 } else {
@@ -296,22 +269,17 @@ if(mysqli_num_rows($resultmain)>0) {
                     }
 
                     if($Segregation!='') {
-
                         $result=mysqli_query($conn,"select * from schedulepurpose where DetailID='$id' and Purpose=4;");
                         if(mysql_num_rows($result)==0) {
                             $result1 = mysqli_query($conn,"insert into schedulepurpose (DetailID,Purpose)
                                  values('$id','$Segregation')");
                             if ($result1) {
-
                                 $result2 = mysqli_query($conn,"insert into segregation (PurposeID,Q1,Q1Remark,Q2,Q2Remark,Q3,Q3Remark,Q4,Q4Remark,Q5,Q5Remark,Q6,Q6Remark)
                                      values('$id','$SegregationA','$SegregationARemark','$SegregationB','$SegregationBRemark','$SegregationC','$SegregationCRemark',
                                             '$SegregationD','$SegregationDRemark','$SegregationE','$SegregationERemark','$SegregationF','$SegregationFRemark')");
-
                                 $result3=mysqli_query($conn,"update scheduledetail set CustomerRemarks='$CustomerRemarks' where ID='$id';");
                             }
-                        }
-                        else
-                        {
+                        }else{
                             $result4=mysqli_query($conn,"update segregation set Q1='$SegregationA',Q1Remark='$SegregationARemark',Q2='$SegregationB',Q2Remark='$SegregationBRemark',
                                       Q3='$SegregationC',Q3Remark='$SegregationCRemark',Q4='$SegregationD',Q4Remark='$SegregationDRemark',Q5='$SegregationE',
                                       Q5Remark='$SegregationERemark',Q6='$SegregationF',Q6Remark='$SegregationFRemark' where PurposeID='$id';");
@@ -321,8 +289,7 @@ if(mysqli_num_rows($resultmain)>0) {
                     }
 
                     if($Verification!='') {
-
-                        $result=mysqli_query($conn,"select * from schedulepurpose where DetailID='$id' and Purpose=10");
+                        $result=mysqli_query($conn,"select * from schedulepurpose where DetailID='$id' and Purpose=7");
                         if(mysql_num_rows($result)==0) {
                             $result1 = mysqli_query($conn,"insert into schedulepurpose (DetailID,Purpose)
                              values('$id','$Verification')");
@@ -331,9 +298,24 @@ if(mysqli_num_rows($resultmain)>0) {
 
                                 $result3=mysqli_query($conn,"update scheduledetail set CustomerRemarks='$CustomerRemarks' where ID='$id'");
                             }
+                        }else{
+                            $result1=mysqli_query($conn,"update verification set TokenNo='$TokenNo' where ID='$id'");
+
+                            $result2=mysqli_query($conn,"update scheduledetail set CustomerRemarks='$CustomerRemarks' where ID='$id'");
                         }
-                        else
-                        {
+                    }
+
+                    if($ReVerification!='') {
+                        $result=mysqli_query($conn,"select * from schedulepurpose where DetailID='$id' and Purpose=18");
+                        if(mysql_num_rows($result)==0) {
+                            $result1 = mysqli_query($conn,"insert into schedulepurpose (DetailID,Purpose)
+                             values('$id','$ReVerification')");
+                            if ($result1) {
+                                $result2 = mysqli_query($conn,"insert into verification (PurposeID,TokenNo) values('$id','$TokenNo')");
+
+                                $result3=mysqli_query($conn,"update scheduledetail set CustomerRemarks='$CustomerRemarks' where ID='$id'");
+                            }
+                        }else{
                             $result1=mysqli_query($conn,"update verification set TokenNo='$TokenNo' where ID='$id'");
 
                             $result2=mysqli_query($conn,"update scheduledetail set CustomerRemarks='$CustomerRemarks' where ID='$id'");
@@ -344,16 +326,16 @@ if(mysqli_num_rows($resultmain)>0) {
                     {
                         $purposeID='';
                         $purpose='';
-                        if($BForm!=''){ $purposeID=5;$purpose=$BForm;}
-                        if($OfficeWork!=''){ $purposeID=6;$purpose=$OfficeWork;}
-                        if($Marketing!=''){ $purposeID=7;$purpose=$Marketing;}
+                        if($BForm!=''){ $purposeID=6;$purpose=$BForm;}
+                        if($OfficeWork!=''){ $purposeID=10;$purpose=$OfficeWork;}
+                        if($Marketing!=''){ $purposeID=11;$purpose=$Marketing;}
                         if($Payment!=''){ $purposeID=8;$purpose=$Payment;}
-                        if($Collection!=''){ $purposeID=9;$purpose=$Collection;}
-                        if($Supply!=''){ $purposeID=11;$purpose=$Supply;}
-                        if($supervisorDuty!=''){ $purposeID=12;$purpose=$supervisorDuty;}
-                        if($Meeting!=''){ $purposeID=13;$purpose=$Meeting;}
-                        if($trainingAssistant!=''){ $purposeID=14;$purpose=$trainingAssistant;}
-                        if($inchargeDuty!=''){ $purposeID=15;$purpose=$inchargeDuty;}
+                        if($Collection!=''){ $purposeID=5;$purpose=$Collection;}
+                        if($Supply!=''){ $purposeID=12;$purpose=$Supply;}
+                        if($supervisorDuty!=''){ $purposeID=13;$purpose=$supervisorDuty;}
+                        if($Meeting!=''){ $purposeID=14;$purpose=$Meeting;}
+                        if($trainingAssistant!=''){ $purposeID=15;$purpose=$trainingAssistant;}
+                        if($inchargeDuty!=''){ $purposeID=16;$purpose=$inchargeDuty;}
 
                         $result=mysqli_query($conn,"select * from schedulepurpose where DetailID='$id' and Purpose='$purposeID'");
 
@@ -363,17 +345,11 @@ if(mysqli_num_rows($resultmain)>0) {
                             if ($result1) {
                                 $result2=mysqli_query($conn,"update scheduledetail set CustomerRemarks='$CustomerRemarks' where ID='$id';");
                             }
-                        }
-
-                        else
-                        {
+                        } else{
                             $result1=mysqli_query($conn,"update scheduledetail set CustomerRemarks='$CustomerRemarks' where ID='$id'");
                         }
                     }
-                }
-
-                else
-                {
+                }else{
                     Alert('Choose Atleast One Purpose\nData Not Saved');
                 }
             }
@@ -384,8 +360,7 @@ if(mysqli_num_rows($resultmain)>0) {
             }
 
     $response["success"] =1;
-}
-else{
+}else{
     $response["success"] =0;
 }
 mysqli_close($conn);

@@ -65,17 +65,14 @@ if(mysqli_num_rows($resultmain)>0) {
 
             $scheduleDetails["Status"] = $scheduleStatus;
             array_push($response["myscheduleList"], $scheduleDetails);
-
         }
         $response["success"] = 1;
 
-    }
-    else{
+    }else{
         $response["success"] = 2;
     }
    
-}
-else {
+}else {
     // no Code found
     $response["success"] = 0;
     $response["message"] = "No Details found";

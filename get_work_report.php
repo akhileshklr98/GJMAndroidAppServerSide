@@ -29,8 +29,7 @@ if (mysqli_num_rows($result) > 0) {
         }
         if($stat=='Visited'){
             $status["Visited"] = 1;
-        }
-        else if($stat=='NotVisited'){
+        }else if($stat=='NotVisited'){
             $status["NotVisited"] = 1;
         }
         // push single Chitty into final response array

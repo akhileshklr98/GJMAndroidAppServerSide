@@ -14,8 +14,7 @@ if (mysqli_num_rows($resultmain) > 0) {
     $myScheduleID = $_POST['MyScheduleID'];
     if (isset($_POST['Report']) && $_POST['Report'] == "Report") {
         $result = mysqli_query($conn, "select * from emobworkreport where Status='$Status' and EmployeeID='$employeeID' and ScheduleID='$myScheduleID'");
-    }
-    else {
+    }else {
         $result = mysqli_query($conn, "select * from emobworkreport where EmployeeID='$employeeID' and ScheduleID='$myScheduleID'");
     }
     if (mysqli_num_rows($result) > 0) {
@@ -39,8 +38,7 @@ if (mysqli_num_rows($resultmain) > 0) {
             } else {
                 $response["success"] = 4;
             }
-        }
-        else {
+        }else {
             $response["success"] = 1;
         }
 

@@ -14,6 +14,7 @@ if($punchType=="Punch In"){
 
 $currentdate= $_POST['Date'];
 $punchTime= date('H:i:A',strtotime($_POST['Time']));
+$date=date("Y-m-d");
 
 $resultmain = mysqli_query($conn,"select * from user where UserName ='$userName'");
 if(mysqli_num_rows($resultmain)>0) {
@@ -60,7 +61,7 @@ if(mysqli_num_rows($resultmain)>0) {
 //        }
         $response["success"] =1;
     }else{
-        $result =mysqli_query($conn, "insert into punchattendance(EmployeeID,TypeOfPunch,PunchDate,PunchTime,Latitude,Longitude,Location) values('$employeeID','$punchTypeID','$punchDate','$punchTime','$latitude','$longitude','$address')");
+        $result =mysqli_query($conn, "insert into punchattendance(EmployeeID,TypeOfPunch,PunchDate,Date,PunchTime,Latitude,Longitude,Location) values('$employeeID','$punchTypeID','$punchDate','$date','$punchTime','$latitude','$longitude','$address')");
         $response["success"] =2;
     }
 }else{

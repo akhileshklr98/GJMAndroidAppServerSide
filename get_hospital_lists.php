@@ -11,15 +11,13 @@ if(mysqli_num_rows($resultmain)>0) {
     $date = date("Y-m-d");
 
     $result = mysqli_query($conn, "select schedules.BranchID,schedules.EmployeeID,schedules.ScheduleDate,schedules.ScheduleToDate,scheduledetail.*,
-                                    employee.FirstName,employee.LastName,hospital.HospitalName,hospital.AFFNo,PurposeOne.PurposeName as PurposeOneName,
-                                    PurposeTwo.PurposeName as PurposeTwoName
+                                    hospital.HospitalName,hospital.AFFNo,PurposeOne.PurposeName as PurposeOneName,emobworkreport.OutTime,emobworkreport.Status as emobStatus
                                     from schedules
-                                    left join employee on schedules.EmployeeID=employee.ID
                                     left join scheduledetail on schedules.ID=scheduledetail.ScheduleID
                                     left join hospital on scheduledetail.HospitalID=hospital.ID
                                     left join purposeofvisit as PurposeOne on scheduledetail.Purpose1ID=PurposeOne.ID
-                                    left join purposeofvisit as PurposeTwo on scheduledetail.Purpose2ID=PurposeTwo.ID
-                                    where schedules.ScheduleDate='$date' and schedules.EmployeeID='$employeeID'
+                                    left join emobworkreport on scheduledetail.ID=emobworkreport.ScheduleID
+                                    where schedules.ScheduleDate='$date' and schedules.EmployeeID='$employeeID' and scheduledetail.Status=1
                                     order by schedules.ScheduleDate desc");
 
     if (mysqli_num_rows($result) > 0) {
@@ -42,13 +40,10 @@ if(mysqli_num_rows($resultmain)>0) {
             }
 
             $scheduleStatus = '';
-            $resultstatus = mysqli_query($conn, "select Status from emobworkreport where ScheduleID='$scheduledetailID'
-                            order by ScheduleID desc;");
-            if (mysqli_num_rows($resultstatus) > 0) {
-                while ($rowStatus = mysqli_fetch_array($resultstatus)) {
-                    $scheduleStatus = $rowStatus['Status'];
-                }
-            } else {
+            if($row['emobStatus']!=''){
+                $scheduleStatus=$row['emobStatus'];
+            }
+            else{
                 if ($row['Status'] == 0) {
                     $scheduleStatus = "Assigned";
                 }
@@ -61,6 +56,7 @@ if(mysqli_num_rows($resultmain)>0) {
                 if ($row['Status'] == 3) {
                     $scheduleStatus = "Not Visited";
                 }
+
             }
 
             $scheduleDetails["Status"] = $scheduleStatus;

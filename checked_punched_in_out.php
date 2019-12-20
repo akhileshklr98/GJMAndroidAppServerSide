@@ -75,7 +75,7 @@ if(mysqli_num_rows($resultmain)>0) {
             $response["success"] = 4;
         }
         else{
-            $result1 = mysqli_query($conn, "select * from punchattendance where EmployeeID='$employeeID' order by ID desc limit 1");
+            $result1 = mysqli_query($conn, "select * from punchattendance where EmployeeID='$employeeID' and PunchDate<'$punchedDate' order by ID desc limit 1");
             if(mysqli_num_rows($result1)==1){
                 while($row1 = mysqli_fetch_array($result1)){
                     if ($row1['TypeOfPunch'] == 1) {

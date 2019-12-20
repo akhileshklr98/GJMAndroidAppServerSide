@@ -3,9 +3,9 @@ require_once "conn.php";
 
 $return = 0;
 $id=$_POST["MyScheduleID"];
-$result = mysqli_query($conn, "select scheduledetail.ID,schedules.ScheduleDate,scheduledetail.CustomerRemarks,
-                     scheduledetail.Status,scheduledetail.Reason,scheduledetail.ScheduleID,scheduledetail.HospitalID,
-                     hospital.AFFNo,hospital.HospitalName,hospital.Address,hospital.ContactPerson,hospital.ContactNo,schedules.EmployeeID
+$result = mysqli_query($conn, "select scheduledetail.ID,schedules.ScheduleDate,scheduledetail.CustomerRemarks,scheduledetail.Status,scheduledetail.Reason,
+                     scheduledetail.ScheduleID,scheduledetail.HospitalID,hospital.AFFNo,hospital.HospitalName,hospital.Address,
+                     hospital.ContactPerson,hospital.ContactNo,schedules.EmployeeID,scheduledetail.Purpose1ID as Purpose1,scheduledetail.Purpose2ID as Purpose2
                 from schedules
                 inner join scheduledetail on schedules.ID=scheduledetail.ScheduleID
                 inner join hospital on scheduledetail.HospitalID=hospital.ID
@@ -21,6 +21,8 @@ if (mysqli_num_rows($result) > 0) {
         $status["ContactNumber"] = $row["ContactNo"];
         $status["MyScheduleID"] = $row["ID"];
         $status["EmployeeID"] = $row["EmployeeID"];
+        $status["Purpose1"] = $row["Purpose1"];
+        $status["Purpose2"] = $row["Purpose2"];
         
         $resultstatus = mysqli_query($conn,"select Status from emobworkreport where `ScheduleID`='$id'  order by ScheduleID desc");
         if(mysqli_num_rows($resultstatus)>0){

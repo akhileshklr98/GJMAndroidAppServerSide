@@ -81,37 +81,11 @@ if(mysqli_num_rows($resultmain)>0) {
                     if ($row1['TypeOfPunch'] == 1) {
                         $response["success"] = 6;
                     }else{
-                        if($punchType=="Punch Out"){
-                            $result2 = mysqli_query($conn, "select * from scheduledetail 
-                                                                inner join schedules on schedules.ID = scheduledetail.ScheduleID 
-                                                                where schedules.EmployeeID='$employeeID' and schedules.ScheduleDate='$punchedDate' and schedules.Status=1 ");
-                            if(mysqli_num_rows($result2)>0){
-                                $response["success"] = 7;
-                            }
-                            else{
-                                $response["success"] = 3;
-                            }
-                        }
-                        else{
-                            $response["success"] = 3;
-                        }
-                    }
-                }
-            }else{
-                if($punchType=="Punch Out"){
-                    $result2 = mysqli_query($conn, "select * from scheduledetail 
-                                                        inner join schedules on schedules.ID = scheduledetail.ScheduleID 
-                                                        where schedules.EmployeeID='$employeeID' and schedules.ScheduleDate='$punchedDate' and scheduledetail.Status=1 ");
-                    if(mysqli_num_rows($result2)>0){
-                        $response["success"] = 7;
-                    }
-                    else{
                         $response["success"] = 3;
                     }
                 }
-                else{
-                    $response["success"] = 3;
-                }
+            }else{
+                $response["success"] = 3;
             }
         }
 

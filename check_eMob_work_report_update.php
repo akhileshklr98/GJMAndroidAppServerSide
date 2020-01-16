@@ -21,11 +21,22 @@ if(mysqli_num_rows($resultmain)>0) {
             }
         }else {
             $result1 = mysqli_query($conn, "select * from emobworkreport where  EmployeeID='$employeeID' and Status='Visited'  and emobworkreport.OutTime is null and Date='$date'");//To check whether any previous "Enter" & no "Exit & Report"
+            // if (mysqli_num_rows($result1) > 0) {
+            //     $response["success"] = 4;//pending work report
+            // }
+            // else{
+            //     $response["success"] = 1;// inserting into emobworkreport
+            // }
             if (mysqli_num_rows($result1) > 0) {
+                while ($row = mysqli_fetch_array($result1)) {
+                    $scheduleId = $row['ScheduleID'];
+                }
                 $response["success"] = 4;//pending work report
+                $response["ScheduleID"] = $scheduleId;
             }
             else{
                 $response["success"] = 1;// inserting into emobworkreport
+                $response["ScheduleID"] = "";
             }
         }
 

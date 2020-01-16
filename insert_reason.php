@@ -113,8 +113,8 @@ if(mysqli_num_rows($resultmain)>0) {
         $TrainingDate = date('Y-m-d',strtotime($_POST['txtTrainingDate']));
         $StartTime=trim($_POST["txtStartTime"]);
         $FinishTime =trim($_POST["txtFinishTime"]);
-        $Sessions=trim($_POST["txtSessions"]);
-        $Attendee =trim($_POST["txtAttendee"]);
+        $Sessions = trim($_POST["txtSessions"]);
+        $Attendee = trim($_POST["txtAttendee"]);
         $AssistanceName =$_POST["txtAssistance"];
 
         $sqlassist = mysqli_query($conn,"select * from employee where  concat(`FirstName`,' ',`LastName`) ='$AssistanceName'");

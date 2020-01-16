@@ -5,7 +5,7 @@ $return = 0;
 $currentdate=date("Y-m-d");
 date_default_timezone_set("Asia/Kolkata");
 
-$current=date("Y-m-d H:i:s");
+$current=date("Y-m-d H:i:A");
 $split=explode(" ",$current);
 $currentTime=$split[1];
 
